@@ -8,7 +8,7 @@ const groupSchema = new Schema({
         unique: true,
     },
     description: String,
-    login: { type: Schema.Types.ObjectId, ref: 'User' },
+    login: { type: Schema.Types.ObjectId, ref: 'User', unique: true },
     users: [{ type: Schema.Types.ObjectId, ref: 'User' }],
 });
 

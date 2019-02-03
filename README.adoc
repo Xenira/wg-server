@@ -3,9 +3,11 @@ WG-Server (Shared flat server)
 Lasse Sprengel <lasse.sprengel@pm.me>
 v0.1
 
+image:https://api.codeclimate.com/v1/badges/492cdb7f9aaff89bb4d4/maintainability[link:https://codeclimate.com/github/Xenira/wg-server/maintainability]
+
 :toc:
 
-== THIS PROJECT IS STILL WIP. USE AT OWN RISK.
+CAUTION: THIS PROJECT IS STILL WIP. USE AT OWN RISK.
 
 This project will provide different functionality in a shared flat. The idea is to have a tablet as dashboard inside the shared space. This connects to the phones and other devices and allows you to manage tasks, etc.
 

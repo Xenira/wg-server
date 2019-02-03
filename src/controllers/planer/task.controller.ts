@@ -8,24 +8,14 @@ import taskModel, { ITask } from '../../models/planer/task.model';
 import userModel from '../../models/user.model';
 
 export const getUserTasks = (req: Request, res: Response) => {
-    const tasks: ITask[] = [];
-    groupModel.find({ login: req.user }, (err, groups) => {
-        if (!err) {
-            groups.forEach((g) => taskModel.find({ group: g }, (taskErr, groupTasks) => {
-                if (!taskErr) {
-                    tasks.push(...groupTasks);
-                }
-            }));
-        }
-    });
-
-    taskModel.find({ users: { $in: req.user } }, (err, userTasks) => {
-        if (!err) {
-            tasks.push(...userTasks);
-        }
-    });
-
-    res.json(tasks.filter((t, i) => tasks.indexOf(t) > i));
+    const results: ITask[] = [];
+    const promisses = [taskModel.find({ owner: req.user }).then((tasks) => results.push(...tasks))];
+    groupModel.find({ users: { $in: [req.user] } }).then((groups) => {
+        promisses.push(...groups.map((group) => {
+            return taskModel.find({ owner: group.login }).then((tasks) => results.push(...tasks));
+        }));
+    }).then(() => Promise.all(promisses))
+        .then(() => res.json(results.filter((t, i) => results.indexOf(t) === i)));
 };
 
 export const createTask = [
