@@ -1,0 +1,10 @@
+{
+	"compilerOptions": {
+		"module": "commonjs",
+		"target": "es2015",
+		"noUnusedParameters": true
+	},
+	"exclude": [
+		"node_modules"
+	]
+}
