@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { body } from 'express-validator/check';
+import { body, param } from 'express-validator/check';
 
 import HttpError from '../../config/error';
 import validation, { validateArrayElements } from '../../config/validation';
@@ -83,5 +83,20 @@ export const createTask = [
             }
             return Promise.resolve(newTask);
         }).then((newTask) => res.json(newTask)).catch((err) => next(err));
+    },
+];
+
+export const deleteTask = [
+    param('id').isMongoId(),
+    (req: Request, res: Response, next: NextFunction) => {
+        taskModel.findOneAndDelete({_id: req.params.id, owner: req.user })
+            .then((deletedItem) => {
+                if (deletedItem) {
+                    return res.sendStatus(204);
+                }
+                next(new HttpError(404, 'Task not found or insufficiant permissions.'));
+            }).catch((reason) => {
+                next(new HttpError(500, reason));
+            });
     },
 ];
